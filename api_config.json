@@ -1,0 +1,1 @@
+{"api_route": "https://httpbin.org/post", "username": "myuser", "password": "mypassword", "polling_interval": 15, "start_time": "08:00", "end_time": "22:00", "days": ["monday", "wednesday", "friday"]}

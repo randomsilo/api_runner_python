@@ -1,0 +1,122 @@
+{% extends '/layout/base_page.html' %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            
+                            <div class="media-content">
+                                <p class="title is-4">API RUNNER</p>
+                                <p class="subtitle is-6">Simple Request Invoker</p>
+                            </div>
+                            <figure class="image is-128x128">
+                                <img src="{{ url_for('static', filename='images/api-runner-logo.png') }}">
+                            </figure>
+                        </div>
+
+                        <div class="content">
+                            <a href="/" class="button is-success">Refresh</a>
+                            {% if last_call %}
+                            <div class="notification {{ 'is-info' if last_call.status_code == 200 else 'is-danger' }} mt-4">
+                                <strong>Last API Call:</strong><br>
+                                Time: {{ last_call.timestamp }}<br>
+                                Status Code: {{ last_call.status_code }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <div class="card">
+                    <header class="card-header has-background-info">
+                        <p class="card-header-title">API Configuration</p>
+                    </header>
+                    <div class="card-content">
+                        <form method="POST" action="/">
+                            <div class="field">
+                                <label class="label">API Route</label>
+                                <div class="control">
+                                    <input class="input" type="text" name="api_route" placeholder="Enter API route"
+                                        value="{{ form_data.api_route if form_data else '' }}">
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label">User Name</label>
+                                <div class="control">
+                                    <input class="input" type="text" name="username" placeholder="Enter user name"
+                                        value="{{ form_data.username if form_data else '' }}">
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label">Password</label>
+                                <div class="control">
+                                    <input class="input" type="password" name="password" placeholder="Enter password"
+                                        value="{{ form_data.password if form_data else '' }}">
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label">Polling Interval (minutes)</label>
+                                <div class="control">
+                                    <input class="input" type="number" name="polling_interval" placeholder="Enter Polling Interval in Minutes"
+                                        value="{{ form_data.polling_interval if form_data else 15 }}">
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label">Start Time</label>
+                                <div class="control">
+                                    <input class="input" type="time" name="start_time"
+                                        value="{{ form_data.start_time if form_data else '' }}">
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label">End Time</label>
+                                <div class="control">
+                                    <input class="input" type="time" name="end_time"
+                                        value="{{ form_data.end_time if form_data else '' }}">
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label">Days of the Week</label>
+                                <div class="control">
+                                    {% set selected_days = form_data.days if form_data and form_data.days else [] %}
+                                    {% for day in
+                                    ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'] %}
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="days" value="{{ day }}" {% if day in selected_days
+                                            %}checked{% endif %}>
+                                        {{ day.capitalize() }}
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="field is-grouped is-grouped-right">
+                                <div class="control">
+                                    <button class="button is-success" type="submit">Save</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
